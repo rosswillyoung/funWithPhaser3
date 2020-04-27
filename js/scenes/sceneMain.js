@@ -6,6 +6,7 @@ class SceneMain extends Phaser.Scene {
   preload() {
     this.load.image('body', 'assets/images/body.png');
     this.load.image('platform', 'assets/images/platform.png');
+    this.load.image('platform1', 'assets/images/platform1.png');
   }
 
   create() {
@@ -20,6 +21,8 @@ class SceneMain extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.physics.add.collider(this.player, this.platforms);
+
+    this.createPlatform();
   }
 
   update() {
@@ -34,5 +37,10 @@ class SceneMain extends Phaser.Scene {
     if (this.player.body.touching.down){
       this.player.setVelocityX(0);
     }
+  }
+
+  createPlatform() {
+    this.platform = this.platforms.create(300, 330, 'platform').setScale(.2, .4).refreshBody();
+    this.platform2 = this.platforms.create(120, 300, 'platform').setScale(.1, .4).refreshBody();
   }
 }
