@@ -2,9 +2,12 @@ let config = {
     type: Phaser.AUTO,
     width: 400,
     height: 400,
-    physics: 'arcade',
-    arcade: {
-      debug: true
+    backgroundColor: '#bfcc00',
+    physics: {
+      default: 'arcade',
+      arcade: {
+        debug: true
+      }
     },
     scene: [ SceneMain ]
 };
