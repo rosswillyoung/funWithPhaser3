@@ -30,9 +30,9 @@ class SceneMain extends Phaser.Scene {
       this.player.setVelocityY(-120);
     }
     if (this.cursors.left.isDown && !this.player.body.touching.down) {
-      this.player.setVelocityX(-100);
+      this.player.setVelocityX(-70);
     } else if (this.cursors.right.isDown && !this.player.body.touching.down) {
-      this.player.setVelocityX(100);
+      this.player.setVelocityX(70);
     }
     if (this.player.body.touching.down){
       this.player.setVelocityX(0);
@@ -41,6 +41,9 @@ class SceneMain extends Phaser.Scene {
 
   createPlatform() {
     this.platform = this.platforms.create(300, 330, 'platform').setScale(.2, .4).refreshBody();
-    this.platform2 = this.platforms.create(120, 300, 'platform').setScale(.1, .4).refreshBody();
+
+    this.platform1 = this.platforms.create(150, 350, 'platform');
+    this.platform1.body.setSize(50, 10);
+    this.platform1.setDisplaySize(50, 10);
   }
 }
