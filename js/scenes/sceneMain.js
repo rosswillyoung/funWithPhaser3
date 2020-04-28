@@ -1,15 +1,18 @@
 class SceneMain extends Phaser.Scene {
   constructor() {
-    super ( {key: 'SceneMain'} );
+    super({ key: "SceneMain" });
   }
 
-  preload() {
-  }
+  preload() {}
 
   create() {
     emitter = new Phaser.Events.EventEmitter();
     // this.head = this.add.image(150, 100, 'body');
-    this.player = this.physics.add.image(game.config.width / 2, game.config.height - 100, 'body');
+    this.player = this.physics.add.image(
+      game.config.width / 2,
+      game.config.height - 100,
+      "body"
+    );
     this.player.setBounce(0);
     this.player.setCollideWorldBounds(true);
     this.player.setGravity(0, 500);
@@ -18,15 +21,22 @@ class SceneMain extends Phaser.Scene {
     this.gameOver = false;
 
     this.platforms = this.physics.add.staticGroup();
-    this.platforms.create(game.config.width / 2, game.config.height, 'platform');
-    this.platforms.create(150, 330, 'platform').setScale(.2, .4).refreshBody();
+    this.platforms.create(
+      game.config.width / 2,
+      game.config.height,
+      "platform"
+    );
+    this.platforms
+      .create(150, 330, "platform")
+      .setScale(0.2, 0.4)
+      .refreshBody();
     // this.head.body.setVelocity(10, 0);
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.physics.add.collider(this.player, this.platforms);
     this.gameStarted = false;
     this.createFirstPlatforms();
-    this.pointText = this.add.text(game.config.width / 2, 25, 'Points: 0');
+    this.pointText = this.add.text(game.config.width / 2, 25, "Points: 0");
     this.pointText.setOrigin(0.5, 0.5);
   }
 
@@ -41,7 +51,7 @@ class SceneMain extends Phaser.Scene {
     } else if (this.cursors.right.isDown && !this.player.body.touching.down) {
       this.player.setVelocityX(70);
     }
-    if (this.player.body.touching.down){
+    if (this.player.body.touching.down) {
       this.player.setVelocityX(0);
     }
 
@@ -49,12 +59,12 @@ class SceneMain extends Phaser.Scene {
       this.platforms.children.entries.forEach((platform) => {
         if (this.player.y > 390) {
           this.gameOver = true;
-          this.scene.start('SceneOver');
+          this.scene.start("SceneOver");
         }
         if (this.player.y < 100) {
-          platform.y += .7;
+          platform.y += 0.7;
         }
-        platform.y += .3;
+        platform.y += 0.3;
         platform.refreshBody();
         if (platform.y > 420) {
           platform.destroy();
@@ -65,14 +75,21 @@ class SceneMain extends Phaser.Scene {
         }
       });
       // console.log(this.platforms);
-    };
+    }
   }
 
   createFirstPlatforms() {
     let platformNumber = 10;
     let yRange = 280;
     for (let i = 0; i <= platformNumber; i++) {
-      this.platforms.create(Phaser.Math.Between(25, 375), Phaser.Math.Between(yRange, yRange - 30), 'platform').setScale(.2, .4).refreshBody();
+      this.platforms
+        .create(
+          Phaser.Math.Between(25, 375),
+          Phaser.Math.Between(yRange, yRange - 30),
+          "platform"
+        )
+        .setScale(0.2, 0.4)
+        .refreshBody();
       yRange -= 50;
     }
 
@@ -87,11 +104,18 @@ class SceneMain extends Phaser.Scene {
     let platformNumber = 10;
     let yRange = 30;
     for (let i = 0; i <= platformNumber; i++) {
-      this.platforms.create(Phaser.Math.Between(25, 375), Phaser.Math.Between(yRange, yRange - 30), 'platform').setScale(.2, .4).refreshBody();
+      this.platforms
+        .create(
+          Phaser.Math.Between(25, 375),
+          Phaser.Math.Between(yRange, yRange - 30),
+          "platform"
+        )
+        .setScale(0.2, 0.4)
+        .refreshBody();
       yRange -= 50;
     }
     this.points += 10;
-    this.pointText.setText('Points: ' + this.points);
-    console.log(this.points);
+    this.pointText.setText("Points: " + this.points);
+    // console.log(this.points);
   }
 }
