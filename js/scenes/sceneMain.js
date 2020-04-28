@@ -12,7 +12,7 @@ class SceneMain extends Phaser.Scene {
   create() {
     // this.head = this.add.image(150, 100, 'body');
     this.player = this.physics.add.image(game.config.width / 2, game.config.height - 100, 'body');
-    this.player.setBounce(.2);
+    // this.player.setBounce(.2);
     this.player.setCollideWorldBounds(true);
 
     this.platforms = this.physics.add.staticGroup();
@@ -23,13 +23,13 @@ class SceneMain extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.physics.add.collider(this.player, this.platforms);
     this.gameStarted = false;
-    this.createPlatform();
+    this.createFirstPlatforms();
   }
 
   update() {
     if (this.cursors.up.isDown && this.player.body.touching.down) {
       this.gameStarted = true;
-      this.player.setVelocityY(-120);
+      this.player.setVelocityY(-150);
     }
     if (this.cursors.left.isDown && !this.player.body.touching.down) {
       this.player.setVelocityX(-70);
@@ -42,17 +42,21 @@ class SceneMain extends Phaser.Scene {
 
     if (this.gameStarted) {
       this.platforms.children.entries.forEach((platform) => {
-        platform.y += .2;
+        platform.y += .3;
         platform.refreshBody();
         if (platform.y > 400) {
           platform.destroy();
+          // console.log(this.platforms.children.entries.length);
+          if (this.platforms.children.entries.length <= 8) {
+            this.createPlatforms();
+          }
         }
       });
       // console.log(this.platforms);
     };
   }
 
-  createPlatform() {
+  createFirstPlatforms() {
     let platformNumber = 10;
     let yRange = 280;
     for (let i = 0; i <= platformNumber; i++) {
@@ -65,5 +69,14 @@ class SceneMain extends Phaser.Scene {
     // this.platform1 = this.platforms.create(150, 350, 'platform');
     // this.platform1.body.setSize(50, 10);
     // this.platform1.setDisplaySize(50, 10);
+  }
+
+  createPlatforms() {
+    let platformNumber = 10;
+    let yRange = 30;
+    for (let i = 0; i <= platformNumber; i++) {
+      this.platforms.create(Phaser.Math.Between(25, 375), Phaser.Math.Between(yRange, yRange - 30), 'platform').setScale(.2, .4).refreshBody();
+      yRange -= 50;
+    }
   }
 }
