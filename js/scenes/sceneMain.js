@@ -12,6 +12,7 @@ class SceneMain extends Phaser.Scene {
     this.player = this.physics.add.image(game.config.width / 2, game.config.height - 100, 'body');
     this.player.setBounce(0);
     this.player.setCollideWorldBounds(true);
+    this.player.setGravity(0, 500);
 
     this.points = 0;
     this.gameOver = false;
@@ -32,7 +33,8 @@ class SceneMain extends Phaser.Scene {
   update() {
     if (this.cursors.up.isDown && this.player.body.touching.down) {
       this.gameStarted = true;
-      this.player.setVelocityY(-150);
+      this.player.setVelocityY(-300);
+      this.player.setGravity(0, 100);
     }
     if (this.cursors.left.isDown && !this.player.body.touching.down) {
       this.player.setVelocityX(-70);
