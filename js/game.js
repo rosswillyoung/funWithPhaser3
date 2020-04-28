@@ -1,3 +1,5 @@
+let emitter;
+
 let config = {
     type: Phaser.AUTO,
     width: 400,
@@ -6,11 +8,11 @@ let config = {
     physics: {
       default: 'arcade',
       arcade: {
-        debug: true,
+        debug: false,
         gravity: {y: 100}
       }
     },
-    scene: [ SceneMain, SceneOver ]
+    scene: [ SceneLoad, SceneMain, SceneOver ]
 };
 
 let game = new Phaser.Game(config);

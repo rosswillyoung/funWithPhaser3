@@ -4,12 +4,10 @@ class SceneMain extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('body', 'assets/images/body.png');
-    this.load.image('platform', 'assets/images/platform.png');
-    this.load.image('platform1', 'assets/images/platform1.png');
   }
 
   create() {
+    emitter = new Phaser.Events.EventEmitter();
     // this.head = this.add.image(150, 100, 'body');
     this.player = this.physics.add.image(game.config.width / 2, game.config.height - 100, 'body');
     this.player.setBounce(0);
