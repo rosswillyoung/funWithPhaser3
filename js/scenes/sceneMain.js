@@ -19,6 +19,7 @@ class SceneMain extends Phaser.Scene {
 
     this.points = 0;
     this.gameOver = false;
+    this.moveSpeed = 0.3;
 
     this.platforms = this.physics.add.staticGroup();
     this.platforms.create(
@@ -44,7 +45,7 @@ class SceneMain extends Phaser.Scene {
     if (this.cursors.up.isDown && this.player.body.touching.down) {
       this.gameStarted = true;
       this.player.setVelocityY(-300);
-      this.player.setGravity(0, 100);
+      this.player.setGravity(0, 70);
     }
     if (this.cursors.left.isDown && !this.player.body.touching.down) {
       this.player.setVelocityX(-70);
@@ -64,12 +65,12 @@ class SceneMain extends Phaser.Scene {
         if (this.player.y < 100) {
           platform.y += 0.7;
         }
-        platform.y += 0.3;
+        platform.y += this.moveSpeed;
         platform.refreshBody();
         if (platform.y > 420) {
           platform.destroy();
           // console.log(this.platforms.children.entries.length);
-          if (this.platforms.children.entries.length <= 8) {
+          if (this.platforms.children.entries.length <= 7) {
             this.createPlatforms();
           }
         }
@@ -81,16 +82,20 @@ class SceneMain extends Phaser.Scene {
   createFirstPlatforms() {
     let platformNumber = 10;
     let yRange = 280;
+    let lastXValue = 0;
     for (let i = 0; i <= platformNumber; i++) {
+      let xValue = Phaser.Math.Between(25, 375);
+      let yValue = Phaser.Math.Between(yRange, yRange - 30);
+      if (xValue < lastXValue + 30 && xValue > lastXValue - 30) {
+        xValue = lastXValue + 30 ? lastXValue < 200 : lastXValue - 30;
+      }
+
       this.platforms
-        .create(
-          Phaser.Math.Between(25, 375),
-          Phaser.Math.Between(yRange, yRange - 30),
-          "platform"
-        )
+        .create(xValue, yValue, "platform")
         .setScale(0.2, 0.4)
         .refreshBody();
       yRange -= 50;
+      lastXValue = xValue;
     }
 
     // this.platform = this.platforms.create(300, 330, 'platform').setScale(.2, .4).refreshBody();
@@ -101,18 +106,23 @@ class SceneMain extends Phaser.Scene {
   }
 
   createPlatforms() {
+    this.moveSpeed += 0.04;
     let platformNumber = 10;
     let yRange = 30;
+    let lastXValue = 0;
     for (let i = 0; i <= platformNumber; i++) {
+      let xValue = Phaser.Math.Between(25, 375);
+      let yValue = Phaser.Math.Between(yRange, yRange - 30);
+      if (xValue < lastXValue + 30 && xValue > lastXValue - 30) {
+        xValue = lastXValue + 50 ? lastXValue < 200 : lastXValue - 50;
+      }
+
       this.platforms
-        .create(
-          Phaser.Math.Between(25, 375),
-          Phaser.Math.Between(yRange, yRange - 30),
-          "platform"
-        )
+        .create(xValue, yValue, "platform")
         .setScale(0.2, 0.4)
         .refreshBody();
       yRange -= 50;
+      lastXValue = xValue;
     }
     this.points += 10;
     this.pointText.setText("Points: " + this.points);
