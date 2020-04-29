@@ -15,7 +15,7 @@ class SceneMain extends Phaser.Scene {
     );
     this.player.setBounce(0);
     this.player.setCollideWorldBounds(true);
-    this.player.setGravity(0, 500);
+    this.player.setGravity(0, 0);
 
     this.points = 0;
     this.gameOver = false;
@@ -45,12 +45,12 @@ class SceneMain extends Phaser.Scene {
     if (this.cursors.up.isDown && this.player.body.touching.down) {
       this.gameStarted = true;
       this.player.setVelocityY(-300);
-      this.player.setGravity(0, 70);
+      this.player.setGravity(0, 0);
     }
     if (this.cursors.left.isDown && !this.player.body.touching.down) {
-      this.player.setVelocityX(-70);
+      this.player.setVelocityX(-90);
     } else if (this.cursors.right.isDown && !this.player.body.touching.down) {
-      this.player.setVelocityX(70);
+      this.player.setVelocityX(90);
     }
     if (this.player.body.touching.down) {
       this.player.setVelocityX(0);
@@ -63,7 +63,7 @@ class SceneMain extends Phaser.Scene {
           this.scene.start("SceneOver");
         }
         if (this.player.y < 100) {
-          platform.y += 0.7;
+          platform.y += this.moveSpeed + 0.3;
         }
         platform.y += this.moveSpeed;
         platform.refreshBody();
@@ -85,7 +85,7 @@ class SceneMain extends Phaser.Scene {
     let lastXValue = 0;
     for (let i = 0; i <= platformNumber; i++) {
       let xValue = Phaser.Math.Between(25, 375);
-      let yValue = Phaser.Math.Between(yRange, yRange - 30);
+      let yValue = Phaser.Math.Between(yRange, yRange - 20);
       if (xValue < lastXValue + 30 && xValue > lastXValue - 30) {
         xValue = lastXValue + 30 ? lastXValue < 200 : lastXValue - 30;
       }
@@ -106,13 +106,13 @@ class SceneMain extends Phaser.Scene {
   }
 
   createPlatforms() {
-    this.moveSpeed += 0.04;
+    this.moveSpeed += 0.1;
     let platformNumber = 10;
-    let yRange = 30;
+    let yRange = 20;
     let lastXValue = 0;
     for (let i = 0; i <= platformNumber; i++) {
       let xValue = Phaser.Math.Between(25, 375);
-      let yValue = Phaser.Math.Between(yRange, yRange - 30);
+      let yValue = Phaser.Math.Between(yRange, yRange - 20);
       if (xValue < lastXValue + 30 && xValue > lastXValue - 30) {
         xValue = lastXValue + 50 ? lastXValue < 200 : lastXValue - 50;
       }
