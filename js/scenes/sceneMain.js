@@ -19,7 +19,7 @@ class SceneMain extends Phaser.Scene {
 
     this.points = 0;
     this.gameOver = false;
-    this.moveSpeed = 0.3;
+    this.moveSpeed = 0.5;
 
     this.platforms = this.physics.add.staticGroup();
     this.platforms.create(
@@ -32,6 +32,13 @@ class SceneMain extends Phaser.Scene {
       .setScale(0.2, 0.4)
       .refreshBody();
     // this.head.body.setVelocity(10, 0);
+
+    this.powerUpGroup = this.physics.add.group();
+    this.physics.add.collider(this.player, this.powerUpGroup, () => {
+      this.gravityPowerUp();
+    });
+
+    this.physics.add.collider(this.powerUpGroup, this.platforms);
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.physics.add.collider(this.player, this.platforms);
@@ -62,8 +69,8 @@ class SceneMain extends Phaser.Scene {
           this.gameOver = true;
           this.scene.start("SceneOver");
         }
-        if (this.player.y < 100) {
-          platform.y += this.moveSpeed + 0.3;
+        if (this.player.y < 150) {
+          platform.y += this.moveSpeed + 0.4;
         }
         platform.y += this.moveSpeed;
         platform.refreshBody();
@@ -121,11 +128,40 @@ class SceneMain extends Phaser.Scene {
         .create(xValue, yValue, "platform")
         .setScale(0.2, 0.4)
         .refreshBody();
+
+      let powerUp = Phaser.Math.Between(1, 20);
+      if (powerUp == 1) {
+        this.powerUpObject = this.powerUpGroup.create(
+          xValue,
+          yValue - 5,
+          "ball"
+        );
+        this.powerUpObject.setScale(0.2);
+        console.log(true);
+      }
       yRange -= 50;
       lastXValue = xValue;
     }
     this.points += 10;
     this.pointText.setText("Points: " + this.points);
     // console.log(this.points);
+    // this.gravityPowerUp();
+  }
+
+  gravityPowerUp() {
+    this.player.setGravityY(-500);
+    // this.powerUpGroup.children.entries.forEach((child) => child.destroy());
+    this.powerUpGroup.clear(true, true);
+    let originalMoveSpeed = this.moveSpeed;
+    this.moveSpeed = 2;
+    let timer = this.time.delayedCall(
+      5000,
+      () => {
+        this.player.setGravityY(0);
+        this.moveSpeed = originalMoveSpeed;
+      },
+      null,
+      this
+    );
   }
 }
